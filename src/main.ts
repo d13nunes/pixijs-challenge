@@ -2,6 +2,7 @@ import { setEngine } from "./app/getEngine";
 import { LoadScreen } from "./app/screens/LoadScreen";
 // import { MainScreen } from "./app/screens/main/MainScreen";
 import { PhoenixFlameScreen } from "./app/screens/phoenix/PhoenixFlameScreen";
+import { FPSCounter } from "./app/ui/FPSCounter";
 // import { MagicWordsScreen } from "./app/screens/magicwords/MagicWordsScreen";
 import { userSettings } from "./app/utils/userSettings";
 import { CreationEngine } from "./engine/engine";
@@ -34,4 +35,9 @@ setEngine(engine);
   await engine.navigation.showScreen(LoadScreen);
   // Show the main screen once the load screen is dismissed
   await engine.navigation.showScreen(PhoenixFlameScreen);
+
+  // Add FPS counter
+  const fpsCounter = new FPSCounter();
+  engine.stage.addChild(fpsCounter);
+  engine.ticker.add(fpsCounter.update, fpsCounter);
 })();
