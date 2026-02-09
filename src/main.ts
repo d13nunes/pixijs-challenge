@@ -1,7 +1,8 @@
 import { setEngine } from "./app/getEngine";
 import { LoadScreen } from "./app/screens/LoadScreen";
 // import { MainScreen } from "./app/screens/main/MainScreen";
-import { MagicWordsScreen } from "./app/screens/magicwords/MagicWordsScreen";
+import { PhoenixFlameScreen } from "./app/screens/phoenix/PhoenixFlameScreen";
+// import { MagicWordsScreen } from "./app/screens/magicwords/MagicWordsScreen";
 import { userSettings } from "./app/utils/userSettings";
 import { CreationEngine } from "./engine/engine";
 
@@ -32,5 +33,5 @@ setEngine(engine);
   // Show the load screen
   await engine.navigation.showScreen(LoadScreen);
   // Show the main screen once the load screen is dismissed
-  await engine.navigation.showScreen(MagicWordsScreen);
+  await engine.navigation.showScreen(PhoenixFlameScreen);
 })();
