@@ -1,7 +1,7 @@
 import { setEngine } from "./app/getEngine";
-import { CardsScreen } from "./app/screens/cards/CardsScreen";
 import { LoadScreen } from "./app/screens/LoadScreen";
-import { MainScreen } from "./app/screens/main/MainScreen";
+// import { MainScreen } from "./app/screens/main/MainScreen";
+import { MagicWordsScreen } from "./app/screens/magicwords/MagicWordsScreen";
 import { userSettings } from "./app/utils/userSettings";
 import { CreationEngine } from "./engine/engine";
 
@@ -32,5 +32,5 @@ setEngine(engine);
   // Show the load screen
   await engine.navigation.showScreen(LoadScreen);
   // Show the main screen once the load screen is dismissed
-  await engine.navigation.showScreen(CardsScreen);
+  await engine.navigation.showScreen(MagicWordsScreen);
 })();

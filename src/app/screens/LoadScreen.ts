@@ -1,4 +1,4 @@
-import { CircularProgressBar } from "@pixi/ui";
+import { ProgressBar } from "../ui/ProgressBar";
 import { animate } from "motion";
 import type { ObjectTarget } from "motion/react";
 import { Container, Sprite, Texture } from "pixi.js";
@@ -10,25 +10,12 @@ export class LoadScreen extends Container {
   /** The PixiJS logo */
   private pixiLogo: Sprite;
   /** Progress Bar */
-  private progressBar: CircularProgressBar;
+  private progressBar: ProgressBar;
 
   constructor() {
     super();
 
-    this.progressBar = new CircularProgressBar({
-      backgroundColor: "#3d3d3d",
-      fillColor: "#e72264",
-      radius: 100,
-      lineWidth: 15,
-      value: 20,
-      backgroundAlpha: 0.5,
-      fillAlpha: 0.8,
-      cap: "round",
-    });
-
-    this.progressBar.x += this.progressBar.width / 2;
-    this.progressBar.y += -this.progressBar.height / 2;
-
+    this.progressBar = new ProgressBar();
     this.addChild(this.progressBar);
 
     this.pixiLogo = new Sprite({
