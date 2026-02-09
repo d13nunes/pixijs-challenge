@@ -1,4 +1,4 @@
-import { Container, Graphics, Ticker } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 
 
 import { Label } from "../../ui/Label";

@@ -22,7 +22,7 @@ export class Button extends FancyButton {
 
     super({
       defaultView: "button.png",
-      nineSliceSprite: [38, 50, 38, 50],
+      nineSliceSprite: [48, 58, 48, 58],
       anchor: 0.5,
       text: new Label({
         text: opts.text,
@@ -32,7 +32,7 @@ export class Button extends FancyButton {
           fontSize: opts.fontSize,
         },
       }),
-      textOffset: { x: 0, y: -13 },
+      textOffset: { x: 0, y: -9 },
       defaultTextAnchor: 0.5,
       scale: 0.9,
       animations: {
