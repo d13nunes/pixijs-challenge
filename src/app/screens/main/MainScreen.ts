@@ -10,6 +10,7 @@ import { SettingsPopup } from "../../popups/SettingsPopup";
 import { Button } from "../../ui/Button";
 
 import { Bouncer } from "./Bouncer";
+import { CardsScreen } from "../cards/CardsScreen";
 
 /** The screen that holds the app */
 export class MainScreen extends Container {
@@ -21,6 +22,7 @@ export class MainScreen extends Container {
   private settingsButton: FancyButton;
   private addButton: FancyButton;
   private removeButton: FancyButton;
+  private showCardScreenButton: FancyButton;
   private bouncer: Bouncer;
   private paused = false;
 
@@ -80,10 +82,20 @@ export class MainScreen extends Container {
     });
     this.removeButton.onPress.connect(() => this.bouncer.remove());
     this.addChild(this.removeButton);
+
+    this.showCardScreenButton = new Button({
+      text: "Cards",
+      width: 175,
+      height: 110,
+    });
+    this.showCardScreenButton.onPress.connect(() =>
+      engine().navigation.showScreen(CardsScreen),
+    );
+    this.addChild(this.showCardScreenButton);
   }
 
   /** Prepare the screen just before showing */
-  public prepare() { }
+  public prepare() {}
 
   /** Update the screen */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -105,7 +117,7 @@ export class MainScreen extends Container {
   }
 
   /** Fully reset */
-  public reset() { }
+  public reset() {}
 
   /** Resize the screen, fired whenever window size changes */
   public resize(width: number, height: number) {
@@ -120,6 +132,8 @@ export class MainScreen extends Container {
     this.settingsButton.y = 30;
     this.removeButton.x = width / 2 - 100;
     this.removeButton.y = height - 75;
+    this.showCardScreenButton.x = width / 2 + 100;
+    this.showCardScreenButton.y = height - 75;
     this.addButton.x = width / 2 + 100;
     this.addButton.y = height - 75;
 
@@ -135,6 +149,7 @@ export class MainScreen extends Container {
       this.settingsButton,
       this.addButton,
       this.removeButton,
+      this.showCardScreenButton,
     ];
 
     let finalPromise!: AnimationPlaybackControls;
@@ -152,7 +167,7 @@ export class MainScreen extends Container {
   }
 
   /** Hide screen with animations */
-  public async hide() { }
+  public async hide() {}
 
   /** Auto pause the app when window go out of focus */
   public blur() {
