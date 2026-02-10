@@ -21,7 +21,7 @@ setEngine(engine);
   // Initialize the creation engine instance
   await engine.init({
     background: "#1E1E1E",
-    resizeTo: window,
+    resizeTo: document.getElementById("pixi-container") as HTMLElement,
     resizeOptions: { minWidth: 300, minHeight: 500, letterbox: false },
     antialias: true,
     resolution: window.devicePixelRatio || 2,
