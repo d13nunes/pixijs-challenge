@@ -1,12 +1,22 @@
-import { Container, Sprite, Ticker } from "pixi.js";
+import { Container, DestroyOptions, Sprite, Ticker } from "pixi.js";
 import { Button } from "../../ui/Button";
 import { Label } from "../../ui/Label";
+import { engine } from "../../getEngine";
+import { MainScreen } from "../main/MainScreen";
+
+type ParticleSprite = Sprite & {
+  vx: number;
+  vy: number;
+  vr: number;
+  fadeSpeed: number;
+};
 
 export class PhoenixFlameScreen extends Container {
   public static assetBundles = ["main"];
-  private particles: Sprite[] = [];
+  private particles: ParticleSprite[] = [];
   private readonly DEFAULT_PARTICLES = 10;
   private particleCountLabel!: Label;
+  private closeButton: Button;
 
   private screenW = 300;
   private screenH = 300;
@@ -15,6 +25,12 @@ export class PhoenixFlameScreen extends Container {
   constructor() {
     super();
     this.particleStepper = new Container();
+    this.closeButton = new Button({
+      text: "X",
+      width: 64,
+      height: 64,
+      fontSize: 24,
+    });
     this.setupUI();
     this.startParticles();
   }
@@ -34,6 +50,11 @@ export class PhoenixFlameScreen extends Container {
     btnPlus.x = 120;
     btnPlus.onPress.connect(() => this.updateParticleCount(1));
     this.particleStepper.addChild(btnPlus);
+
+    this.closeButton.onPress.connect(() =>
+      engine().navigation.showScreen(MainScreen),
+    );
+    this.addChild(this.closeButton);
   }
 
   private async startParticles() {
@@ -49,8 +70,11 @@ export class PhoenixFlameScreen extends Container {
   public resize(width: number, height: number) {
     this.screenW = width;
     this.screenH = height;
+    this.closeButton.x = this.screenW - 50;
+    this.closeButton.y = 50;
+
     this.particleStepper.x = this.screenW / 2;
-    this.particleStepper.y = 80;
+    this.particleStepper.y = this.closeButton.y + this.closeButton.height + 12;
   }
 
   public async show() {
@@ -61,7 +85,7 @@ export class PhoenixFlameScreen extends Container {
     this.visible = false;
   }
 
-  public update(_ticker: Ticker) {
+  public update() {
     // Check if we are destroyed to stop leaking ticker
     if (this.destroyed) {
       Ticker.shared.remove(this.update, this);
@@ -69,10 +93,10 @@ export class PhoenixFlameScreen extends Container {
     }
 
     for (const sprite of this.particles) {
-      sprite.x += (sprite as any).vx;
-      sprite.y += (sprite as any).vy;
-      sprite.rotation += (sprite as any).vr;
-      sprite.alpha -= (sprite as any).fadeSpeed;
+      sprite.x += sprite.vx;
+      sprite.y += sprite.vy;
+      sprite.rotation += sprite.vr;
+      sprite.alpha -= sprite.fadeSpeed;
 
       // Reset if invisible or too high up
       if (sprite.alpha <= 0 || sprite.y < 100) {
@@ -81,7 +105,7 @@ export class PhoenixFlameScreen extends Container {
     }
   }
 
-  public destroy(options?: any) {
+  public destroy(options?: DestroyOptions | boolean) {
     Ticker.shared.remove(this.update, this);
     super.destroy(options);
   }
@@ -99,7 +123,7 @@ export class PhoenixFlameScreen extends Container {
   }
 
   private addParticle(initial = false) {
-    const sprite = Sprite.from("fire_particle.png");
+    const sprite = Sprite.from("fire_particle.png") as ParticleSprite;
     sprite.anchor.set(0.5);
     sprite.blendMode = "add";
     this.resetParticle(sprite, initial);
@@ -117,7 +141,7 @@ export class PhoenixFlameScreen extends Container {
     }
   }
 
-  private resetParticle(sprite: Sprite, initial: boolean = false) {
+  private resetParticle(sprite: ParticleSprite, initial: boolean = false) {
     // Randomize start position
     sprite.x = this.screenW / 2 + (Math.random() - 0.5) * 100;
 
@@ -133,10 +157,9 @@ export class PhoenixFlameScreen extends Container {
     const scale = 0.1 + Math.random() * 0.5;
     sprite.scale.set(scale);
     // Random rotation speed data (storing on sprite for convenience, though strictly should use a separate data structure)
-    (sprite as any).vx = (Math.random() - 0.5) * 2;
-    (sprite as any).vy = -2 - Math.random() * 3;
-    (sprite as any).vr = (Math.random() - 0.5) * 0.1;
-    (sprite as any).fadeSpeed = 0.005 + Math.random() * 0.01;
+    sprite.vx = (Math.random() - 0.5) * 2;
+    sprite.vy = -2 - Math.random() * 3;
+    sprite.vr = (Math.random() - 0.5) * 0.1;
+    sprite.fadeSpeed = 0.005 + Math.random() * 0.01;
   }
-
 }
